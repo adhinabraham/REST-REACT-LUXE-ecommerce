@@ -14,6 +14,7 @@ import Dashbordgraph from './components/Dashbord/Dashbordgraph';
 import Coupon from './components/Admincontrol/Coupon';
 import Dashboardtwo from './components/Dashbord/Dashboardtwo';
 import Sales from './components/Salesreport/Sales';
+import Salesreport from './components/Salesreport/Salesreport';
 
 
 
@@ -27,7 +28,7 @@ function App() {
             <Route exact path="/Listuser" element={<Userlist></Userlist>} />
             <Route path="/productadd" element={<Newproduct></Newproduct>} />
             <Route path="/addcategory" element={<Addcategory></Addcategory>} />
-           <Route path="/sales" element={<Sales></Sales>}/>
+           <Route path="/sales" element={<Salesreport></Salesreport>}/>
             <Route
               path="/order"
               element={<Ordermanagement></Ordermanagement>}

@@ -33,6 +33,9 @@ function Navigation() {
       console.log("what is this ");
       navigate("/order");
     };
+  const salesreport = () => {
+    navigate("/sales")
+  }
     
   return (
     <div className="h- ">
@@ -103,6 +106,12 @@ function Navigation() {
               onClick={Order}
             >
               <p className="text-base leading-4  ">order management</p>
+            </button>
+            <button
+              className="flex justify-center items-center space-x-6 hover:text-white focus:outline-none focus:bg-indigo-700 focus:text-white hover:bg-indigo-700 text-gray-600 rounded py-3 pl-4  w-full"
+              onClick={salesreport}
+            >
+              <p className="text-base leading-4  ">Sales reprot </p>
             </button>
           </div>
           <div className="w-full px-4">

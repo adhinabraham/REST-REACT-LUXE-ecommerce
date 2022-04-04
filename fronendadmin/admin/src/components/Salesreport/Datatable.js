@@ -6,6 +6,7 @@ function Datatable({ data }) {
   return (
     <div>
       <table>
+        
         <thead>
           <tr>username </tr>
         </thead>
