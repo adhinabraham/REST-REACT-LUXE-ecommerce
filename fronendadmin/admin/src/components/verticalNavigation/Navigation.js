@@ -14,6 +14,10 @@ function Navigation() {
       navigate('/productadd')
 
     }
+   const productlist = () => {
+     console.log("what is this ");
+     navigate("/productlist");
+   };
     const coupon=()=>{
       console.log("what is this ")
       navigate('/coupon')
@@ -36,6 +40,12 @@ function Navigation() {
   const salesreport = () => {
     navigate("/sales")
   }
+   const productoffer = () => {
+     navigate("/productoffer");
+   };
+  const offerproduct = () => {
+    navigate("/offerproducts");
+  };
     
   return (
     <div className="h- ">
@@ -65,7 +75,7 @@ function Navigation() {
         >
           <div className="xl:mt-6 flex flex-col justify-start items-start  px-4 w-full space-y-3 pb-5   ">
             {/* <div className=" relative focus:outline-none flex jusitfy-start w-full   text-gray-800 rounded  items-center border-gray-300 focus:border-gray-400 border  ">
-            <input type="text" placeholder="Search" className="placeholder-gray-800 text-base placeholder-text-base leading-4 py-3 pl-8 w-full pl-16 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 rounded " />
+            <input type="text" placeholder="Search" className="placeholder-gray-800 text-base placeholder-text-base leading-4 py-3 pl-8 w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 rounded " />
             <svg className="absolute left-4" width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3C6.13401 3 3 6.13401 3 10C3 13.866 6.13401 17 10 17Z" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M21 21L15 15" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -82,6 +92,12 @@ function Navigation() {
               onClick={product}
             >
               <p className="text-base leading-4 ">Addproduct</p>
+            </button>
+            <button
+              className="focus:outline-noneflex justify-center  hover:text-white focus:bg-indigo-700 focus:text-white hover:bg-indigo-700 text-gray-600 rounded py-3 pl-4  items-center w-full  space-x-6"
+              onClick={productlist}
+            >
+              <p className="text-base leading-4 ">productlist</p>
             </button>
             <button
               className="focus:outline-noneflex justify-center  hover:text-white focus:bg-indigo-700 focus:text-white hover:bg-indigo-700 text-gray-600 rounded py-3 pl-4  items-center w-full  space-x-6"
@@ -112,6 +128,18 @@ function Navigation() {
               onClick={salesreport}
             >
               <p className="text-base leading-4  ">Sales reprot </p>
+            </button>
+            <button
+              className="flex justify-center items-center space-x-6 hover:text-white focus:outline-none focus:bg-indigo-700 focus:text-white hover:bg-indigo-700 text-gray-600 rounded py-3 pl-4  w-full"
+              onClick={productoffer}
+            >
+              <p className="text-base leading-4  ">Add product offer </p>
+            </button>
+            <button
+              className="flex justify-center items-center space-x-6 hover:text-white focus:outline-none focus:bg-indigo-700 focus:text-white hover:bg-indigo-700 text-gray-600 rounded py-3 pl-4  w-full"
+              onClick={offerproduct}
+            >
+              <p className="text-base leading-4  ">Offermanage </p>
             </button>
           </div>
           <div className="w-full px-4">

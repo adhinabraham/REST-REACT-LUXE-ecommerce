@@ -28,7 +28,7 @@ function OrderDetails() {
   
   const orderdelete = (id) => {
     console.log(id)
-    const data={"id":id}
+    const data={"id":id,"status":"cancel"}
      axios
        .patch("http://127.0.0.1:8000/order/userorder/", data)
        .then((Response) => {
@@ -44,6 +44,22 @@ function OrderDetails() {
        });
     
   }
+  const orderreturn = (id) => {
+    console.log(id);
+    const data = { "id": id, "status": "return" };
+    axios
+      .patch("http://127.0.0.1:8000/order/userorder/", data)
+      .then((Response) => {
+        console.log("this is then");
+        console.log(Response.data);
+        orderdata();
+        setcancled(true);
+      })
+      .catch((error) => {
+        console.log("this is catch");
+        console.log(console.log(error.data));
+      });
+  };
   
   
      useEffect(() => {
@@ -92,38 +108,59 @@ function OrderDetails() {
                           {obj.products}
                         </h3>
                         <div className="flex justify-start items-start flex-col space-y-2">
-                          <p className="text-sm leading-none text-gray-800">
+                          {/* <p className="text-sm leading-none text-gray-800">
                             <span className="text-red-500">Status: </span>{" "}
                             {obj.status}
-                          </p>
-                          <p className="text-sm leading-none text-gray-800">
+                          </p> */}
+                          {/* <p className="text-sm leading-none text-gray-800">
                             <span className="text-red-600">Date: </span>{" "}
                             {obj.date}
-                          </p>
-                          <p className="text-sm leading-none text-gray-800">
+                          </p> */}
+                          {/* <p className="text-sm leading-none text-gray-800">
                             <span className="text-red-700">User: </span>
                             {obj.username}
-                          </p>
+                          </p> */}
                         </div>
                       </div>
                       <div className="flex justify-between space-x-8 items-start w-full">
                         <p className="text-base xl:text-lg leading-6">
-                          ${obj.price}{" "}
-                          <span className="text-red-300 line-through">
-                            {" "}
-                            $3000.00
-                          </span>
+                          ₹{obj.price}{" "}
                         </p>
                         <p className="text-base xl:text-lg leading-6 text-gray-800">
                           items : {obj.product_stock}
                         </p>
                         <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
-                          $- {obj.product_stock * obj.price}
+                          ₹- {obj.product_stock * obj.price}
                         </p>
-                        {obj.status=='cancel'?<div></div>:
-                          <button className=" bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={() => { orderdelete(obj.id) }}>
-                             cancel order
-                          </button>}
+
+                        <button className=" bg-transparent  text-slate-700 font-semibold  py-2 px-4 border border-slate-500 border-transparent rounded">
+                          {obj.status}
+                        </button>
+
+                        {obj.status == "cancel" ? (
+                          <div></div>
+                        ) : (
+                          <button
+                            className=" bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                            onClick={() => {
+                              orderdelete(obj.id);
+                            }}
+                          >
+                            cancel order
+                          </button>
+                        )}
+                        {obj.status == "Develiverd" ? (
+                          <button
+                            className=" bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                            onClick={() => {
+                              orderreturn(obj.id);
+                            }}
+                          >
+                            Return order
+                          </button>
+                        ) : (
+                          <div></div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -193,7 +230,7 @@ function OrderDetails() {
                     </div>
                   </div>
                   <p className="text-lg font-semibold leading-6 text-gray-800">
-                   we will take $60 as shipping charge
+                    we will take ₹60 as shipping charge
                   </p>
                 </div>
                 <div className="w-full flex justify-center items-center">

@@ -20,6 +20,7 @@ function Newproduct() {
   const [addcategory,setaddcategory]=useState([])
   const [status,setStatus]=useState('')
   const [srcImg, setSrcImg] = useState(null);
+  console.log(category)
 
   const navigate=useNavigate()
 
@@ -85,7 +86,7 @@ function Newproduct() {
     axios.post('http://127.0.0.1:8000/newadmin/product/',formData)
     .then((Response)=>{
         navigate("/productlist")
-        console.log("this  is catch ")
+        console.log("this  is then ")
         console.log(Response.data)
         notificationsuccess("product add successfullu")
         setStatus(Response.data)
@@ -269,7 +270,7 @@ function Newproduct() {
                     {
                     addcategory.map((obj)=>{
                       return(
-                      <option>{obj.category_name}</option>
+                        <option value={obj.id}>{obj.category_name}</option>
                       );
                       
                     })

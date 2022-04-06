@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { ImageZoom } from "react-simple-image-zoom";
 
 toast.configure();
@@ -18,10 +18,8 @@ function Showproduct() {
   const { id } = useParams();
   console.log("product: " + id);
 
-
-
-  const notificationsuccess=(message)=>{
-    toast.success(''+message, {
+  const notificationsuccess = (message) => {
+    toast.success("" + message, {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
@@ -29,10 +27,10 @@ function Showproduct() {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      });
-  }
-  const notificationerror=(message)=>{
-    toast.error(''+message, {
+    });
+  };
+  const notificationerror = (message) => {
+    toast.error("" + message, {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
@@ -40,10 +38,8 @@ function Showproduct() {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      });
-  }
-
-
+    });
+  };
 
   useEffect(() => {
     axios
@@ -68,11 +64,11 @@ function Showproduct() {
       .post("http://127.0.0.1:8000/cart/additem/", data)
       .then((Response) => {
         console.log("this is  then ");
-        notificationsuccess("Product Added to cart")
+        notificationsuccess("Product Added to cart");
       })
       .catch((error) => {
         console.log("this is catch");
-        notificationerror("something went wrong ..")
+        notificationerror("something went wrong ..");
       });
   };
 
@@ -137,10 +133,36 @@ function Showproduct() {
                 <p className=" font-normal text-base leading-6 text-gray-600 mt-7">
                   {oneproduct.description}
                 </p>
-                <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">
-                  {" "}
-                  ₹ {oneproduct.price}
-                </p>
+                {oneproduct.offerstatus ? (
+                  <p className=" font-semibold  text-lg text-red-400   lg:leading-6 leading-5 mt-6 ">
+                    {" "}
+                    {oneproduct.offer_name}{" "}
+                    <span className="text-neutral-800">
+                      {" "}
+                       {oneproduct.offerpercentage}% off
+                    </span>
+                  </p>
+                ) : (
+                  <p></p>
+                )}
+
+                {oneproduct.offerstatus ? (
+                  <div>
+                    <p className=" font-semibold  text-sm text-red-500  line-through lg:leading-6 leading-5 mt-6 ">
+                      {" "}
+                      ₹ {oneproduct.price2}
+                    </p>
+                    <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">
+                      {" "}
+                      ₹ {oneproduct.price}
+                    </p>
+                  </div>
+                ) : (
+                  <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">
+                    {" "}
+                    ₹ {oneproduct.price}
+                  </p>
+                )}
 
                 <div className="lg:mt-11 mt-10">
                   {/* <div className="flex flex-row justify-between">
@@ -176,19 +198,24 @@ function Showproduct() {
                     src={oneproduct.image}
                     alt="Wooden Chair Previw"
                   />
-                  
                 </div>
                 <div className=" w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-4 grid-cols-2 gap-6">
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                        <img src={oneproduct.image1} alt="Wooden chair - preview 1" />
-                        </div>
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                        <img src={oneproduct.image2} alt="Wooden chair - preview 2" />
-                        </div>
-                        {/* <div className="bg-gray-100 flex justify-center items-center py-4">
+                  <div className="bg-gray-100 flex justify-center items-center py-4">
+                    <img
+                      src={oneproduct.image1}
+                      alt="Wooden chair - preview 1"
+                    />
+                  </div>
+                  <div className="bg-gray-100 flex justify-center items-center py-4">
+                    <img
+                      src={oneproduct.image2}
+                      alt="Wooden chair - preview 2"
+                    />
+                  </div>
+                  {/* <div className="bg-gray-100 flex justify-center items-center py-4">
                         <img src="https://i.ibb.co/0jX1zmR/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1-1.png" alt="Wooden chair- preview 3" />
                         </div> */}
-                    </div>
+                </div>
               </div>
             </>
           )}

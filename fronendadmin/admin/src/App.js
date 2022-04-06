@@ -15,6 +15,8 @@ import Coupon from './components/Admincontrol/Coupon';
 import Dashboardtwo from './components/Dashbord/Dashboardtwo';
 import Sales from './components/Salesreport/Sales';
 import Salesreport from './components/Salesreport/Salesreport';
+import Productoffer from './components/product/Productoffer';
+import Offerproducts from './components/product/Offerproducts';
 
 
 
@@ -27,18 +29,17 @@ function App() {
             <Route path="/" element={<Login />}></Route>
             <Route exact path="/Listuser" element={<Userlist></Userlist>} />
             <Route path="/productadd" element={<Newproduct></Newproduct>} />
-            <Route path="/addcategory" element={<Addcategory></Addcategory>} />
-           <Route path="/sales" element={<Salesreport></Salesreport>}/>
-            <Route
-              path="/order"
-              element={<Ordermanagement></Ordermanagement>}
-            />
-            <Route
-              path="/dashboard2"
-              element={<Dashbordgraph></Dashbordgraph>}
-            />
+            <Route path='/productlist' element={<Productlist></Productlist>} />
+             <Route path='/productlist' element={<Productlist></Productlist>}/>
+            <Route path="/sales" element={<Salesreport></Salesreport>} />
+            <Route path="/productoffer" element={<Productoffer></Productoffer>} />
+            <Route path="/order" element={<Ordermanagement></Ordermanagement>} />
+            <Route path="/dashboard2" element={<Dashbordgraph></Dashbordgraph>}/>
             <Route path="/dashboard" element={<Dashboardtwo></Dashboardtwo>} />
             <Route path="/coupon" element={<Coupon></Coupon>} />
+            <Route path="/offerproducts" element={<Offerproducts></Offerproducts>} />
+            <Route path='/productlist' element={<Productlist></Productlist>} />
+            <Route path='/addcategory' element={<Addcategory></Addcategory>}/>
           </Routes>
         </BrowserRouter>
       </CookiesProvider>

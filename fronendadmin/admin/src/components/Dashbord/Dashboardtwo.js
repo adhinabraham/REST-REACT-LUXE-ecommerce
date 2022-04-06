@@ -108,7 +108,7 @@ const Chartgraph = () => (
       <h1 className=" ml-[50rem] text-2xl text-gray-900">DASHBOARD</h1>
       <div className="w-4/5">
         <Navigation />
-        <div className="pt-7 grid lg:grid-cols-3 md:grid-cols-2 justify-center items-center xl:gap-y-16 gap-y-20 gap-x-16 lg:gap-x-20 xl:gap-x-0 lg:px-10 xl:px-0">
+        <div className="pt-7 grid lg:grid-cols-3 mt-[-300px] md:grid-cols-2 justify-center items-center xl:gap-y-16 gap-y-20 gap-x-16 lg:gap-x-20 xl:gap-x-0 lg:px-10 xl:px-0">
           <div className="ml-[18rem] pt-56  mt-[-700px]   py-20 w-">
             <div className="cursor-pointer hover:shadow bg-gray-900 py-6 xl:px-4 rounded xl:w-96 w-60 flex justify-center items-center flex-col">
               <div className="mb-6">

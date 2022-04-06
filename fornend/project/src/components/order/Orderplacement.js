@@ -11,7 +11,8 @@ function Orderplacement() {
   const [paymentmethod, setpaymentmethod] = useState("");
   const userid = localStorage.getItem("userid");
   const address = localStorage.getItem("addrssid");
-  const grandtotal = localStorage.getItem("carttotal");
+  const grandto = localStorage.getItem("carttotal");
+  const grandtotal = parseInt(grandto);
   const navigate=useNavigate()
 
   //  const REACT_APP_PUBLIC_KEY="rzp_test_G8TzKLyrRHqa66"

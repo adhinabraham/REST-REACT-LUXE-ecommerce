@@ -20,13 +20,36 @@ function Coupon() {
       console.log(Response.data);
     });
   }, []);
-
+ 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/newadmin/allcoupon/").then((Response) => {
       setcoupondetails(Response.data);
       console.log(Response.data);
     });
   }, []);
+
+
+  const allcoupon = () => {
+     axios.get("http://127.0.0.1:8000/newadmin/allcoupon/").then((Response) => {
+       setcoupondetails(Response.data);
+       console.log(Response.data);
+     });
+    
+  }
+
+  const deletecoupon = (id) => {
+    console.log(id)
+     const data={"id":id}
+    axios
+      .post("http://127.0.0.1:8000/newadmin/coupondelete/", data)
+      .then((response) => {
+        console.log(response.data);
+        allcoupon()
+      })
+      .catch((err) => {
+        console.log(err.data);
+      });
+  };
 
   const action = () => {
     const data = {
@@ -156,57 +179,73 @@ function Coupon() {
       </div>
 
       <>
-        <div className=" px-4">
+        <div className="  px-4">
           <div className="rounded-lg border pb-6 border-gray-200">
             <div className="flex items-center border-b border-gray-200 justify-between px-6 py-3">
               <p className="text-sm lg:text-xl font-semibold leading-tight text-gray-800">
                 Coupon available
               </p>
-              <div className="flex cursor-pointer items-center justify-center px-3 py-2.5 border rounded border-gray-100">
-                <p className="text-xs md:text-sm leading-none text-gray-600">
-                  Filter by: Latest
-                </p>
-              </div>
             </div>
-            <div className="px-6 pt-6 overflow-x-auto">
-              <table className="w-full whitespace-nowrap">
-                <tbody className="mt-2">
-                  {coupondetails.map((obj, index) => {
-                    return (
-                      <tr className="mt-4">
-                        <td>
-                          <div className="flex items-center">
-                            <div className="pl-3">
-                              <div className="flex items-center text-sm leading-none">
-                                <p className="font-semibold text-gray-800">
-                                  couponCode: <span className="text-rose-600"> {obj.coupon_code}</span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="pl-16">
-                          <div>
-                            <p className="text-sm font-semibold leading-none text-right text-gray-800">
-                              description:
-                              <span className="text-amber-600">
-                                {obj.description}
-                              </span>
-                            </p>
-                          </div>
-                        </td>
-                        <td className="pl-16">
-                          <div>
-                            <p className="text-sm font-semibold leading-none text-right text-gray-800">
-                              precentage: {obj.percentage}%
-                            </p>
-                          </div>
+            <div className="py-20">
+              <div className="mx-auto  container bg-white dark:bg-gray-800 shadow rounded">
+                <div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-between items-start lg:items-stretch w-full">
+                  <div className="w-full lg:w-1/3 flex flex-col lg:flex-row items-start lg:items-center"></div>
+                  <div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end"></div>
+                </div>
+                <div className="w-full mt-[-40px] overflow-x-scroll xl:overflow-x-hidden">
+                  <table className="min-w-full bg-white dark:bg-gray-800">
+                    <thead>
+                      <tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
+                        <th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+                          Coupon Name
+                        </th>
+                        <th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+                          Expired Date
+                        </th>
+                        <th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+                          Minimum Rate
+                        </th>
+                        <th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+                          percentage
+                        </th>
+
+                        <td className="text-gray-600 dark:text-gray-400 font-normal pr-8 text-left text-sm tracking-normal leading-4">
+                          Delete coupon
                         </td>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                    </thead>
+                    <tbody>
+                      {coupondetails.map((obj) => {
+                        return (
+                          <tr className="h-24 border-gray-300 dark:border-gray-200 border-b">
+                            <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                              {obj.coupon_code}
+                            </td>
+                            <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                              {obj.expiry_date}
+                            </td>
+                            <td className="pr-6 whitespace-no-wrap">
+                              <div className="flex items-center">
+                                <p className="ml-2 text-gray-800 dark:text-gray-100 tracking-normal leading-4 text-sm">
+                                  {obj.min_rate}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                              {obj.percentage}%
+                            </td>
+                            <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                              <button className=" bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={()=>{deletecoupon(obj.id)}}>
+                                delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -221,38 +260,56 @@ function Coupon() {
         </div>
       </div>
       <>
-        {userdetails.map((obj, index) => {
-          return (
-            <div className="flex flex-col justify-start items-start bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
-              <div className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full "></div>
-              <div className="mt-6 md:mt-0 flex justify-start flex-col md:flex-row  items-start md:items-center space-y-4  md:space-x-6 xl:space-x-8 w-full ">
-                <div className="  flex justify-between items-start w-full flex-col md:flex-row space-y-4 md:space-y-0  ">
-                  <div className="w-full flex flex-col justify-start items-start space-y-8">
-                    <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
-                      {index + 1}
-                    </h3>
-                  </div>
-                  <div className="flex justify-between space-x-8 items-start w-full">
-                    <h1 className="text-basexl:text-lg leading-6">
-                      couponName:
-                      <span className=" text-orange-500 ">
-                        {obj.couponname}
-                      </span>
-                    </h1>
-                    <p className="text-base xl:text-lg leading-6">
-                      status:{" "}
-                      <span className=" text-orange-500 ">{obj.status}</span>
-                    </p>
-                    <p className="text-base xl:text-lg leading-6 text-gray-800">
-                      user :{" "}
-                      <span className=" text-orange-500 ">{obj.username}</span>
-                    </p>
-                  </div>
+        <div className=" mt-[-40px] px-4">
+          <div className="rounded-lg border pb-6 border-gray-200">
+            <div className="py-20">
+              <div className="mx-auto  container bg-white dark:bg-gray-800 shadow rounded">
+                <div className="flex flex-col lg:flex-row p-4 lg:p-8 justify-between items-start lg:items-stretch w-full">
+                  <div className="w-full lg:w-1/3 flex flex-col lg:flex-row items-start lg:items-center"></div>
+                  <div className="w-full lg:w-2/3 flex flex-col lg:flex-row items-start lg:items-center justify-end"></div>
+                </div>
+                <div className="w-full overflow-x-scroll xl:overflow-x-hidden">
+                  <table className="min-w-full bg-white dark:bg-gray-800">
+                    <thead>
+                      <tr className="w-full h-16 border-gray-300 dark:border-gray-200 border-b py-8">
+                        <th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+                          Coupon Name
+                        </th>
+                        <th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+                          username
+                        </th>
+                        <th className="text-gray-600 dark:text-gray-400 font-normal pr-6 text-left text-sm tracking-normal leading-4">
+                          status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {userdetails.map((obj) => {
+                        return (
+                          <tr className="h-24 border-gray-300 dark:border-gray-200 border-b">
+                            <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                              {obj.couponname}
+                            </td>
+                            <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
+                              {obj.username}
+                            </td>
+                            <td className="pr-6 whitespace-no-wrap">
+                              <div className="flex items-center">
+                                <p className="ml-2 text-gray-800 dark:text-gray-100 tracking-normal leading-4 text-sm">
+                                  {obj.status}
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-          );
-        })}
+          </div>
+        </div>
       </>
     </div>
   );

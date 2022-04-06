@@ -2,6 +2,7 @@ from cgitb import reset, text
 from fileinput import filename
 from itertools import count, product
 from mmap import PAGESIZE
+from sys import flags
 from unittest import result
 from urllib.parse import uses_relative
 from wsgiref.util import request_uri
@@ -142,14 +143,23 @@ class Userorder(APIView):
 
     def patch(self, request):
         username = request.data['id']
-        print(id)
-
-        data = Order.objects.get(id=username)
-        print(data)
-        data.status = "cancel"
-        print(data.status)
-        data.save()
-        return Response("changed")
+        fronendstatus=request.data['status']
+        if fronendstatus == "cancel":
+            print(id)
+            data = Order.objects.get(id=username)
+            print(data)
+            data.status = "cancel"
+            print(data.status)
+            data.save()
+            return Response("changed")
+        if fronendstatus == 'return':
+            print(id)
+            data = Order.objects.get(id=username)
+            print(data)
+            data.status = "return"
+            print(data.status)
+            data.save()
+            return Response("changed")
 
 
 class ordernumberlist(APIView):
@@ -171,12 +181,15 @@ class ordernumberlist(APIView):
 class razorpayintegration(APIView):
     def post(self, request):
         amount = request.data['total']
+        print(amount)
+        amounttotal=int(amount)
+        print(amounttotal)
         # name=request.data['username']
 
         client = razorpay.Client(
             auth=('rzp_test_G8TzKLyrRHqa66', 'VOznj2MYGgNgZwq5FyGdfH5t'))
 
-        payment = client.order.create({"amount": int(amount) * 100,
+        payment = client.order.create({"amount": amount * 100,
                                        "currency": "INR",
                                        "payment_capture": "1"})
         print(payment)
@@ -380,6 +393,8 @@ class pdf(PDFTemplateView):
           
           
         )
+
+   
         
 #     def render_to_pdf(context_dict={}):
 #         reust=BytesIO()

@@ -2,7 +2,7 @@
 from users.models import MyUser
 from products.models import category,Product
 from rest_framework import serializers
-from .models import Coupon,user_coupon
+from .models import Coupon,user_coupon,Product_offer
 from rest_framework.authentication import authenticate
 class MyAdminserializer(serializers.ModelSerializer):
     class Meta:
@@ -28,6 +28,12 @@ class MyCoupon(serializers.ModelSerializer):
         fields='__all__'
 
 
+class MYUSERcoupon(serializers.ModelSerializer):
+    class Meta:
+        model = user_coupon
+        fields = '__all__'
+
+
 class Myusercoupon(serializers.ModelSerializer):
 
     username = serializers.CharField(source='user_name.username')
@@ -35,3 +41,7 @@ class Myusercoupon(serializers.ModelSerializer):
     class Meta:
         model = user_coupon
         fields = ['couponname', 'status', 'username']
+class Myproductoffer(serializers.ModelSerializer):
+    class Meta:
+        models=Product_offer
+        fields='__all__'

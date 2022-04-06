@@ -1,5 +1,7 @@
 from django.db import models
 from users.models import MyUser
+from products.models import Product
+
 
 # Create your models here.
 
@@ -16,6 +18,13 @@ class user_coupon(models.Model):
     user_name = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     cpn_code = models.ForeignKey(Coupon, on_delete=models.CASCADE)
     status = models.CharField(max_length=100)
+   
+
+class Product_offer(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    offer_name = models.CharField(max_length=50)
+    discount_value = models.PositiveIntegerField()
+    expiry_date = models.DateField()
 
 
 

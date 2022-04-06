@@ -34,7 +34,7 @@ function Login() {
         axios.post('http://127.0.0.1:8000/user/token/',data).then((Response)=>{
             console.log(Response.data)
             setToken('mytoken',Response.data.access)
-            navigate("/Listuser")
+            navigate("/dashboard");
 
             console.log(token["mytoken"])
  

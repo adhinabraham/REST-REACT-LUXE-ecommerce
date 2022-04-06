@@ -6,4 +6,5 @@ urlpatterns = [
    
     path('productlist/',views.productlist.as_view()),
     path('showproduct/<int:pk>',views.showproduct.as_view()),
+    path('productoffer/', views.productoffer.as_view()),
 ]

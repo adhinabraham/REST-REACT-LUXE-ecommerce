@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework. permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import BasicAuthentication
 from newadmin.models import Coupon,user_coupon
-from newadmin.serilazer import MyCoupon,Myusercoupon
+from newadmin.serilazer import MyCoupon,Myusercoupon,MYUSERcoupon
 import datetime
 from .models import Cart
 from products.models import Product
@@ -183,14 +183,6 @@ class couponchecking(APIView):
                     print("coupon is already applied ")
                     applied = "coupon is already applied "
                     return  Response ({"data":applied})
-
-
-  
-                    
-                    
-
-
-                
                 # coupon_user = user_coupon.objects.get(cpn_code=c_id)
                 # print(coupon_user)
 
@@ -215,9 +207,66 @@ class couponchecking(APIView):
         serilcoupon=Myusercoupon(data,many=True)
         return Response (serilcoupon.data)
 
+class couponapplay(APIView):
+    def post(self, request):
+        coupon = request.data["coupon_code"]
+        couponuser = request.data['user_name']
+        amount=request.data['amount']
+        print(coupon)
+        print("aaaaaaaaaaaaaaaaa")
+        couponid = Coupon.objects.get(coupon_code=coupon)
+        print(couponid)
+        if couponid:
+            print("coupon is valid ")
+            print(" coupon is valid")
+            couponid_percentage = couponid.percentage
+            print(couponid_percentage, "this is couponpercentage")
+            min_amount = couponid.min_rate
+            print(min_amount)
+            expiry_date = couponid.expiry_date
+            print(expiry_date)
+            c_id = couponid.id
+            print(c_id)
+            current_datetime = datetime.date.today()
+            print(current_datetime, "today date ")
+            if expiry_date>current_datetime:
+                print('date is valid date ')
+                print(couponuser)
+                try:
+                   coupon_user = user_coupon.objects.get(user_name=couponuser)
+                except:
+                    print("akd")
+                    if amount > min_amount:
+                        request.data['cpn_code'] = c_id
+                        user_coupon_save = request.data
+                        user_coupon_serial = MYUSERcoupon(data=user_coupon_save)
+                        if user_coupon_serial.is_valid(raise_exception=True):
+                            user_coupon_serial.save()
+                        
+                            return Response({"applied": couponid_percentage})
+                    else:
+                        return Response({"error": "coupon amount is less"}, status=status.HTTP_400_BAD_REQUEST)
+
+                   
+                print(coupon_user)
+                if coupon_user:
+                    print("coupon is valid ")
+                    return Response ({"error":"coupon is already applied"},status=status.HTTP_400_BAD_REQUEST)
+            
+                   
+                    
+
+            else:
+                return Response({"error":"coupon is expired"},status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            print("coupon is not valid ")
+            return Response({"error": "coupon is not found"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 # {"product_id":28,"user_id":31,"product_stock":4,"action":"add"}
 #   {"coupon_code": "eastercoupon","status":"appled","user_name":31}
+# {"coupon_code": "eastercoupon", "status": "appled", "user_name": 31,"amount":2000}
 # {"coupon_code": "eastercoupon"}
 
 # class CartView(viewsets.ViewSet):

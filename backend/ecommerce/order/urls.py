@@ -17,6 +17,7 @@ urlpatterns = [
     path('salesreport/', views.Salesreport.as_view()),
     path('razorpay/', views.razorpayintegration.as_view()),
     path('pdf/', views.pdf.as_view()),
+  
     path('razorpay/payment/success/',views.export_users_xls, name="payment_success")
 
     # path('showproduct/<int:pk>',views.showproduct.as_view()),

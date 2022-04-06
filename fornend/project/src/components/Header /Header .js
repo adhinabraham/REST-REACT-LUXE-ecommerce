@@ -391,7 +391,7 @@ function Header() {
                 )}
                 {username && (
                   <strong className="fill-stroke dark:text-white text-gray-900 font-sans text-xl  hover:subpixel-antialiased 	 uppercase">
-                    Logedin
+                   
                   </strong>
                 )}
               </div>

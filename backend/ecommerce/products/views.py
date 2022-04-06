@@ -36,18 +36,63 @@ class showproduct(APIView):
 
 
 
-# class showproduct (APIView):
 
-#     serializer_class=MyproductSerializer
-#     def get_object(self,pk):
-#         try:
-#             obj=Product.objects.get(pk=pk)
-#             return obj
-#         except Product.DoesNotExist:
+class productoffer(APIView):
+    def patch(self,request):
+        productname=request.data["productname"]
+        discountper = request.data["discountpercentage"]
+        offername = request.data["offername"]
+        productid=Product.objects.get(productname=productname)
+        if productid.offerstatus==True:
+            return Response ("product offer already applied  ")
+        print(productid,"productid ")
+        discountpercentage=int(discountper)
+        actualprice=productid.price
+        price2=productid.price2
+        price2=actualprice
+        print(price2)
+        discountprice=actualprice*discountpercentage/100
+        print(discountprice)
+        actualprice=price2-discountprice
 
-#             return Http404
+        print(actualprice)
+        productid.price=actualprice
+        productid.price2=price2
+        productid.offerstatus=True
+        productid.offer_name=offername
+        productid.offerpercentage = discountpercentage
+        
+        print(productid.price, productid.price2,
+              productid.offerstatus, productid.offer_name)
+        productid.save()
+        
+        return Response("offer applied to product")
+    def get(self,request):
+      
+        product = Product.objects.filter(offerstatus=True)
+        Serializer = MyproductSerializer(
+            product, many=True, context={'request': request})
+        print(Serializer.data)
 
-#     def get(self,request,pk,format=None):
-#         serializer=self.serializer_class(self.get_object(pk))
-#         serialized_data=serializer.data
-#         return Response(serialized_data,status=status.HTTP_200_OK)
+        return Response(Serializer.data)
+
+    def post(self,request):
+        pk=request.data["id"]
+        product=Product.objects.get(id=pk)
+        print(product)
+        productprice2= product.price2
+        print(productprice2)
+        productprice=product.price
+        print(productprice)
+        product.price = productprice2
+
+        product.offerstatus=False
+        product.save()
+        return Response("offer cancled")
+        
+class Categoryoffer(APIView):
+    pass
+
+
+
+#    {"productname":"addidas","discountpercentage":"10","offername":"onamoffer"}

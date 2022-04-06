@@ -17,7 +17,7 @@ from products.models import category
 from products.models import Product as ecomproduct
 from .serilazer import Mycategory,Myproduct
 from .models import Coupon
-from .serilazer import MyCoupon
+from .serilazer import MyCoupon,Myproductoffer
 from rest_framework.parsers import MultiPartParser,FormParser
 
 
@@ -137,14 +137,16 @@ class coupongenerate(APIView):
             data.save()
             return Response ("data is saved ")
         return Response ("not a valid coupon")
-    def delete(self,request,pk):
-        data = Coupon.objects.get(id=pk)
-        print(id)
-        if data is not None:
-            data.delete()
-            return ("coupon  is delet")
-        else :
-            return Response ("not deleted ")
+
+
+
+class Coupondelete(APIView):
+    def post(self,request):
+        id=request.data["id"]
+        coupon=Coupon.objects.get(id=id)
+        coupon.delete()
+        return Response("deleted")
+
 
 
 
@@ -153,6 +155,16 @@ class Createdcoupon(APIView):
         all=Coupon.objects.all()
         serilaall=MyCoupon(all,many=True)
         return Response(serilaall.data)
+
+class productoffer(APIView):
+    def post (self,request):
+        productoffer=request.data
+        productserial=Myproductoffer(data=productoffer,many=True)
+        if productserial.is_valid(raise_exception=True):
+            productserial.save()
+            return Response ("productoffer applied ")
+
+
 
 
 
