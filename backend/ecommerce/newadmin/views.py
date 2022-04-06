@@ -1,6 +1,7 @@
 from ast import Delete, Not
 from operator import is_not
 from urllib import request
+from xml.dom.minidom import TypeInfo
 from django.shortcuts import render
 from django.urls import is_valid_path
 from rest_framework.views import APIView
@@ -91,6 +92,15 @@ class Product(APIView):
         print(request.data)
        
         prodcutitem=Myproduct(data=request.data)
+        i = request.data['category_name']
+        categoryid=int(i)
+        print(categoryid)
+
+        print(type(categoryid))
+        request.data['category_name'] = categoryid
+       
+   
+
        
         if prodcutitem.is_valid(raise_exception=True):
             prodcutitem.save()

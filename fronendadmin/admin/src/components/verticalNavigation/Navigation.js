@@ -46,6 +46,13 @@ function Navigation() {
   const offerproduct = () => {
     navigate("/offerproducts");
   };
+  const offercategory = () => {
+    navigate("/offercategory");
+  };
+  const categoryoffer = () => {
+    navigate("/categoryoffer");
+  };
+    
     
   return (
     <div className="h- ">
@@ -140,6 +147,18 @@ function Navigation() {
               onClick={offerproduct}
             >
               <p className="text-base leading-4  ">Offermanage </p>
+            </button>
+            <button
+              className="flex justify-center items-center space-x-6 hover:text-white focus:outline-none focus:bg-indigo-700 focus:text-white hover:bg-indigo-700 text-gray-600 rounded py-3 pl-4  w-full"
+              onClick={categoryoffer}
+            >
+              <p className="text-base leading-4  ">Addcategory offer </p>
+            </button>
+            <button
+              className="flex justify-center items-center space-x-6 hover:text-white focus:outline-none focus:bg-indigo-700 focus:text-white hover:bg-indigo-700 text-gray-600 rounded py-3 pl-4  w-full"
+              onClick={offercategory}
+            >
+              <p className="text-base leading-4  ">Manage Categoryoffer </p>
             </button>
           </div>
           <div className="w-full px-4">

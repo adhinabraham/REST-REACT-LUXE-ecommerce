@@ -17,6 +17,8 @@ import Sales from './components/Salesreport/Sales';
 import Salesreport from './components/Salesreport/Salesreport';
 import Productoffer from './components/product/Productoffer';
 import Offerproducts from './components/product/Offerproducts';
+import Categoryoffer from './components/category/Categoryoffer';
+import Offercategory from './components/category/Offercategory';
 
 
 
@@ -39,7 +41,9 @@ function App() {
             <Route path="/coupon" element={<Coupon></Coupon>} />
             <Route path="/offerproducts" element={<Offerproducts></Offerproducts>} />
             <Route path='/productlist' element={<Productlist></Productlist>} />
-            <Route path='/addcategory' element={<Addcategory></Addcategory>}/>
+            <Route path='/addcategory' element={<Addcategory></Addcategory>} />
+            <Route path='/categoryoffer' element={<Categoryoffer></Categoryoffer>} />
+            <Route path='/offercategory' element={<Offercategory></Offercategory>}/>
           </Routes>
         </BrowserRouter>
       </CookiesProvider>

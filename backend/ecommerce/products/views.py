@@ -8,8 +8,8 @@ from django.urls import is_valid_path
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404, JsonResponse
-from .models import Product
-from .serilazer import MyproductSerializer
+from .models import Product,category
+from .serilazer import MyproductSerializer,MyCategorySerializer
 from rest_framework import status
 
 
@@ -91,7 +91,68 @@ class productoffer(APIView):
         return Response("offer cancled")
         
 class Categoryoffer(APIView):
-    pass
+   def post(self,request):
+       categoryid = request.data["categoryname"]
+       discountper = request.data["discountpercentage"]
+       offername = request.data["offername"]
+
+       item = category.objects.get(id=categoryid)
+       if item.offerstatus == True:
+           return Response ("already applied")
+       item.offerstatus=True
+      
+       
+       products = Product.objects.filter(category_name=categoryid)
+       for i in products:
+           print(i)
+           if i.offerstatus==False:
+                price1=i.price
+                price2=i.price2
+                price2=price1
+                discountpercentage = int(discountper)
+                discountprice = price1*discountpercentage/100
+                price1 = price2-discountprice
+                i.price=price1
+                i.price2=price2
+                i.offer_name = offername
+                i.offerpercentage = discountpercentage
+                i.offerstatus=True
+                i.save()
+                print("item saved")
+
+       item.save()      
+       print(products)
+       return Response ("true")
+   def patch(self,request):
+       categoryid = request.data["id"]
+       item = category.objects.get(id=categoryid)
+       item.offerstatus = False
+       products = Product.objects.filter(category_name=categoryid)
+       for i in products:
+            productprice2= i.price2
+            print(productprice2)
+            productprice=i.price
+            print(productprice)
+            i.price = productprice2
+
+            i.offerstatus=False
+            i.save()
+
+
+
+       item.save()
+       return Response("category items changed")
+   def get(self,request):
+       items=category.objects.filter(offerstatus=True)
+       serialitems=MyCategorySerializer(items,many=True)
+       return Response (serialitems.data)
+           
+
+
+
+
+    
+
 
 
 

@@ -15,7 +15,7 @@ function Newproduct() {
   const [imag2, Setimg2] = useState([]);
   const [imag3, Setimg3] = useState([]);
   const [price, Setprice] = useState('');
-  const [category,setCategory]=useState('');
+  const [category,setCategory]=useState();
   const [description, Setdescription] = useState('');
   const [addcategory,setaddcategory]=useState([])
   const [status,setStatus]=useState('')
@@ -72,16 +72,19 @@ function Newproduct() {
   
 
   const data = () => {
+   const categoryid=parseInt(category)
     let formData = new FormData();
     formData.append('productname', Productname);
     formData.append('image',imag1);
     formData.append('image1',imag2);
     formData.append('image2',imag3);
     formData.append('description',description)
-    formData.append('category',category);
+    formData.append('category_name',categoryid);
     formData.append('price',price)
-    console.log(formData)
-    
+    console.log(formData.price)
+    for (let pair of formData.entries()) {
+    console.log(pair[0]+ ', ' + pair[1]); 
+}
     
     axios.post('http://127.0.0.1:8000/newadmin/product/',formData)
     .then((Response)=>{

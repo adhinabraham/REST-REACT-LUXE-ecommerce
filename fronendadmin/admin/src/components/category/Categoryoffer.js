@@ -1,4 +1,4 @@
-import React from 'react'
+
 import React from "react";
 import Navigation from "../verticalNavigation/Navigation";
 import Navbar from "../adminnavbar/Navbar";
@@ -8,10 +8,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Categoryoffer() {
-     const [productname, setproductname] = useState("");
+     const [categoryname, setcategoryname] = useState("");
      const [price, setprice] = useState(0);
      const [offername, setoffername] = useState("");
-    const [productlist, setproductlist] = useState([]);
+   
     const[addcategory,setaddcategory]=useState([])
     
      useEffect(() => {
@@ -23,6 +23,27 @@ function Categoryoffer() {
            setaddcategory(Response.data);
          });
      }, []);
+    
+  const form = (e) => {
+    console.log("what is done here");
+    console.log(categoryname, price, offername);
+    const data = {
+     "categoryname": categoryname,
+      "discountpercentage": price,
+      "offername": offername,
+    };
+    console.log(data);
+    axios
+      .post("http://127.0.0.1:8000/product/categoryoffer/", data)
+      .then((Response) => {
+        console.log(Response.data);
+        console.log("offerapplied");
+      })
+      .catch((error) => {
+        console.log("this is error");
+      });
+  };
+    
   
 
   return (
@@ -44,20 +65,20 @@ function Categoryoffer() {
                   >
                     <div className>
                       <h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">
-                        Product offer{" "}
+                        Categoryoffer{" "}
                       </h1>
                       <label
                         htmlFor="name"
                         className="text-gray-800 text-sm font-bold leading-tight tracking-normal"
                       >
-                        Product Name
+                        Categoryname
                       </label>
                       <select
                         id="countries"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                         placeholder="Add name"
                         onChange={(e) => {
-                          setproductname(e.target.value);
+                          setcategoryname(e.target.value);
                         }}
                       >
                         {/* <option>Tshirt</option>
@@ -65,7 +86,7 @@ function Categoryoffer() {
                     <option>Shirts</option>
                     <option>Pants</option> */}
                         {addcategory.map((obj) => {
-                          return <option>{obj.productname}</option>;
+                          return <option value={obj.id}>{obj.category_name}</option>;
                         })}
                       </select>
                       <label
@@ -121,7 +142,7 @@ function Categoryoffer() {
                       </div>
                       <div className="flex items-center justify-start w-full">
                         <button
-                          className="focus:outline-none transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm"
+                          className="focus:outline-none transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm" onClick={form}
                          
                         >
                           Submit
