@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from re import S
+
 from urllib import request
 from django.shortcuts import render
 from django.urls import is_valid_path
@@ -40,8 +41,16 @@ class showproduct(APIView):
 class productoffer(APIView):
     def patch(self,request):
         productname=request.data["productname"]
-        discountper = request.data["discountpercentage"]
+        discountpert = request.data["discountpercentage"]
         offername = request.data["offername"]
+       
+        discountper=int(discountpert)
+        print(type(discountper))
+        if discountper>90:
+            return Response ("not valid offer",status=status.HTTP_400_BAD_REQUEST)
+
+
+
         productid=Product.objects.get(productname=productname)
         if productid.offerstatus==True:
             return Response ("product offer already applied  ")
@@ -93,8 +102,14 @@ class productoffer(APIView):
 class Categoryoffer(APIView):
    def post(self,request):
        categoryid = request.data["categoryname"]
-       discountper = request.data["discountpercentage"]
+       discountpert = request.data["discountpercentage"]
        offername = request.data["offername"]
+       discountper=int(discountpert)
+       print(type(discountper))
+       if discountper>90:
+           print("not valid ")
+           return Response("not valid ",status=status.HTTP_400_BAD_REQUEST)
+       
 
        item = category.objects.get(id=categoryid)
        if item.offerstatus == True:
@@ -146,6 +161,15 @@ class Categoryoffer(APIView):
        items=category.objects.filter(offerstatus=True)
        serialitems=MyCategorySerializer(items,many=True)
        return Response (serialitems.data)
+    
+class categoryitem(APIView):
+    def get (self,request):
+         items = category.objects.get(offerstatus=True)
+       
+         print(items.category_name)
+         item = items.category_name
+         return Response ({"item":item})
+
            
 
 

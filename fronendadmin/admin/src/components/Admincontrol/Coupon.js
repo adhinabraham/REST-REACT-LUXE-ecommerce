@@ -3,14 +3,20 @@ import Navbar from "../adminnavbar/Navbar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Navigation from "../verticalNavigation/Navigation";
+import validator from "@brocode/simple-react-form-validation-helper";
 
 function Coupon() {
+  const [error, seterror] = useState(false);
   const [minimumrate, setminimumrate] = useState();
+   const [minimumrateerror, setminimumrateerror] = useState("");
   const [couponcode, setcouponcode] = useState("");
+  const [errorcoupon, seterrorcoupon] = useState("");
   const [percentage, setpercentage] = useState();
+   const [percentageerror, setpercentageerror] = useState("");
   const [date, setdate] = useState("");
   const [userdetails, setUserdetails] = useState([]);
   const [coupondetails, setcoupondetails] = useState([]);
+  
 
   console.log(date);
 
@@ -38,6 +44,7 @@ function Coupon() {
   }
 
   const deletecoupon = (id) => {
+    
     console.log(id)
      const data={"id":id}
     axios
@@ -51,7 +58,15 @@ function Coupon() {
       });
   };
 
-  const action = () => {
+  const action = (e) => {
+     if (
+       minimumrate == "" || couponcode == "" || date == ""
+     ) {
+       console.log("this isnull");
+       seterror(true);
+       e.preventDefault();
+       return;
+     }
     const data = {
       min_rate: minimumrate,
       coupon_code: couponcode,
@@ -75,22 +90,16 @@ function Coupon() {
       <Navbar />
       <div className="flex items-center justify-center">
         <Navigation />
-        <div className="xl:w-10/12 w-full px-8">
+        <div className="xl:w-10/12 mt-[-400px] w-full px-8">
           <div className="bg-gray-100 py-12 flex flex-wrap items-center justify-center"></div>
           <div className="xl:px-24">
             <div className="mt-16 lg:flex justify-between border-b border-gray-200 pb-16">
               <div className="w-80">
                 <div className="flex items-center">
                   <h1 className="text-xl font-medium pr-2 leading-5 text-gray-800">
-                    Generate your coupon
+                    Luxe coupon generation , you can add coupon to users
                   </h1>
                 </div>
-                <button
-                  className=" mt-24 ml-0 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                  onClick={action}
-                >
-                  Generate coupon
-                </button>
               </div>
               <div>
                 <div className="md:flex items-center lg:ml-24 lg:mt-0 mt-4">
@@ -110,8 +119,16 @@ function Coupon() {
                       value={minimumrate}
                       onChange={(e) => {
                         setminimumrate(e.target.value);
+                        validator.percentageInputBlurHandler(
+                          e.target.value,
+                          setminimumrateerror
+                        );
+                        seterror(false);
                       }}
                     />
+                    <span className="text-red-500 fs-6">
+                      {minimumrateerror}
+                    </span>
                   </div>
                   <div className="md:w-64 md:ml-12 md:mt-0 mt-4">
                     <label
@@ -129,8 +146,14 @@ function Coupon() {
                       value={couponcode}
                       onChange={(e) => {
                         setcouponcode(e.target.value);
+                        validator.nameInputBlurHandler(
+                          e.target.value,
+                          seterrorcoupon
+                        );
+                        seterror(false);
                       }}
                     />
+                    <span className="text-red-500 fs-6">{errorcoupon}</span>
                   </div>
                 </div>
                 <div className="md:flex items-center lg:ml-24 mt-8">
@@ -149,8 +172,14 @@ function Coupon() {
                       value={percentage}
                       onChange={(e) => {
                         setpercentage(e.target.value);
+                        validator.percentageInputBlurHandler(
+                          e.target.value,
+                          setpercentageerror
+                        );
+                        seterror(false);
                       }}
                     />
+                    <span className="text-red-500 fs-6">{percentageerror}</span>
                   </div>
                   <div className="md:w-64 md:ml-12 md:mt-0 mt-4">
                     <label
@@ -168,10 +197,27 @@ function Coupon() {
                       value={date}
                       onChange={(e) => {
                         setdate(e.target.value);
+                        seterror(false);
                       }}
                     />
+                    {error ? (
+                      <p className="text-red-400 "> please fill the date field </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
                 </div>
+                <button
+                  className=" mt-5 ml-24 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                  onClick={action}
+                >
+                  Generate coupon
+                </button>
+                {error ? (
+                  <p className="text-red-400 ml-24"> plse fill the from </p>
+                ) : (
+                  <p></p>
+                )}
               </div>
             </div>
           </div>
@@ -179,7 +225,7 @@ function Coupon() {
       </div>
 
       <>
-        <div className="  px-4">
+        <div className=" mt-[-400px] xl:w-10/12 ml-[350px]  px-4">
           <div className="rounded-lg border pb-6 border-gray-200">
             <div className="flex items-center border-b border-gray-200 justify-between px-6 py-3">
               <p className="text-sm lg:text-xl font-semibold leading-tight text-gray-800">
@@ -235,7 +281,12 @@ function Coupon() {
                               {obj.percentage}%
                             </td>
                             <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-                              <button className=" bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={()=>{deletecoupon(obj.id)}}>
+                              <button
+                                className=" bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                                onClick={() => {
+                                  deletecoupon(obj.id);
+                                }}
+                              >
                                 delete
                               </button>
                             </td>
@@ -250,7 +301,7 @@ function Coupon() {
           </div>
         </div>
       </>
-      <div className="bg-white mt-6 dark:bg-gray-800 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between px-5 sm:px-10 shadow rounded-t">
+      {/* <div className="bg-white mt-6 dark:bg-gray-800 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between px-5 sm:px-10 shadow rounded-t">
         <div className="flex items-center mb-4 sm:mb-0 md:mb-0 lg:mb-0 xl:mb-0">
           <div className="ml-2">
             <h1 className="text-xl dark:text-gray-100 text-red-700 font-bold">
@@ -258,8 +309,8 @@ function Coupon() {
             </h1>
           </div>
         </div>
-      </div>
-      <>
+      </div> */}
+      {/* <>
         <div className=" mt-[-40px] px-4">
           <div className="rounded-lg border pb-6 border-gray-200">
             <div className="py-20">
@@ -310,7 +361,7 @@ function Coupon() {
             </div>
           </div>
         </div>
-      </>
+      </> */}
     </div>
   );
 }

@@ -5,11 +5,17 @@ import axios from "axios";
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import validator from "@brocode/simple-react-form-validation-helper";
 
 function Productoffer() {
   const [productname, setproductname] = useState("");
+   const [productnameerror, setproductnameerror] = useState("");
   const [price, setprice] = useState(0);
+  const [priceerror, setpriceerror] = useState("");
+
   const [offername, setoffername] = useState("");
+  const [offernameerror, setoffernameerror] = useState("");
+  const [error,seterror]=useState(false)
   const [productlist, setproductlist] = useState([])
   
 
@@ -38,6 +44,12 @@ function Productoffer() {
    };
     
   const form = (e) => {
+      if (productname === "" || price == "" || offername=="") {
+        console.log("this isnull");
+        seterror(true);
+        e.preventDefault();
+        return;
+      }
     console.log("what is done here");
     console.log(productname, price, offername);
     const data = { "productname": productname, "discountpercentage": price, "offername": offername };
@@ -49,6 +61,7 @@ function Productoffer() {
 
     }).catch((error) => {
       console.log("this is error")
+      notificationerror("not valid offer")
     })
   };
   
@@ -114,14 +127,21 @@ function Productoffer() {
                     >
                       offerpercentage
                     </label>
-                    <input
-                      id="name"
-                      type="number"
-                      className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
-                      onChange={(e) => {
-                        setprice(e.target.value);
-                      }}
-                    ></input>
+                    <div>
+                      <input
+                        id="name"
+                        type="number"
+                        className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+                        onChange={(e) => {
+                          setprice(e.target.value);
+                          validator.priceInputBlurHandler(
+                            e.target.value,
+                            setpriceerror
+                          );seterror(false)
+                        }}
+                      ></input>
+                      <span className="text-red-500 fs-6">{priceerror}</span>
+                    </div>
 
                     <label
                       htmlFor="cvc"
@@ -156,8 +176,14 @@ function Productoffer() {
                         placeholder=""
                         onChange={(e) => {
                           setoffername(e.target.value);
+                          validator.nameInputBlurHandler(
+                            e.target.value,
+                            setoffernameerror
+                          );seterror(false)
                         }}
                       />
+                     
+                      <span className="text-red-500 fs-6">{offernameerror}</span>
                     </div>
                     <div className="flex items-center justify-start w-full">
                       <button
@@ -166,9 +192,13 @@ function Productoffer() {
                       >
                         Submit
                       </button>
-                      <button className="focus:outline-none ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm">
-                        Cancel
-                      </button>
+                      <div className="ml-2">
+                        {error ? (
+                          <p className="text-red-500">please fill the field</p>
+                        ) : (
+                          <p></p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

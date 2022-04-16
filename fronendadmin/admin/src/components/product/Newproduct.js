@@ -6,19 +6,24 @@ import axios from 'axios';
 import { Link,useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import validator from "@brocode/simple-react-form-validation-helper";
 
 toast.configure();
 
 function Newproduct() {
   const [Productname, Setproductname] = useState('');
+   const [Productnameerror, Setproductnameerror] = useState('');
   const [imag1, Setimg1] = useState([]);
   const [imag2, Setimg2] = useState([]);
   const [imag3, Setimg3] = useState([]);
   const [price, Setprice] = useState('');
+  const [priceerror, Setpriceerror] = useState('');
   const [category,setCategory]=useState();
   const [description, Setdescription] = useState('');
+   const [descriptionerror, Setdescriptionerror] = useState('');
   const [addcategory,setaddcategory]=useState([])
-  const [status,setStatus]=useState('')
+  const [status, setStatus] = useState('')
+  const [error,seterror]=useState(false)
   const [srcImg, setSrcImg] = useState(null);
   console.log(category)
 
@@ -71,7 +76,13 @@ function Newproduct() {
 
   
 
-  const data = () => {
+  const data = (e) => {
+      if (Productname=="" || Image==null || description==""|| price ==""){
+            console.log("this isnull")
+            seterror(true)
+            e.preventDefault()
+            return
+        }
    const categoryid=parseInt(category)
     let formData = new FormData();
     formData.append('productname', Productname);
@@ -125,15 +136,23 @@ function Newproduct() {
                   className="text-gray-800 text-sm font-bold leading-tight tracking-normal"
                 >
                   Product Name
+              
                 </label>
-                <input
+                <div>
+                  <input
                   id="name"
                   className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
                   placeholder="product"
                   onChange={(e) => {
-                    Setproductname(e.target.value);
+                    Setproductname(e.target.value); seterror(false);   validator.nameInputBlurHandler(
+                          e.target.value,
+                         Setproductnameerror
+                        );
                   }}
                 ></input>
+                  <span className="text-red-500 fs-6">{Productnameerror}</span>
+                </div>
+                
                 <label
                 
                   className="text-gray-800 text-sm font-bold leading-tight tracking-normal"
@@ -250,9 +269,10 @@ function Newproduct() {
                     className="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
                     placeholder="Add price "
                     onChange={(e) => {
-                      Setprice(e.target.value);
+                      Setprice(e.target.value);validator.priceInputBlurHandler(e.target.value,Setpriceerror)
                     }}
                   />
+                    <span className="text-red-500 fs-6">{priceerror}</span>
                 </div>
 
                 <div>
@@ -312,9 +332,10 @@ function Newproduct() {
                     className="mb-8 h-28 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full flex items-center pl-3 text-sm border-gray-300 rounded border"
                     placeholder=""
                     onChange={(e) => {
-                      Setdescription(e.target.value);
+                      Setdescription(e.target.value);validator.addressInputBlurHandler(e.target.value,Setdescriptionerror)
                     }}
                   />
+                    <span className="text-red-500 fs-6">{descriptionerror}</span>
                 </div>
                 <div className="flex items-center justify-start w-full">
                 <button
@@ -326,7 +347,9 @@ function Newproduct() {
                   <button className="focus:outline-none ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm">
                     Cancel
                   </button>
+                 
                 </div>
+                 {error?<p className="text-red-900">please fill the form </p>:<p></p>}
                 {/* {status?
                 <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
                   <span className="font-medium">Success alert!</span> submited

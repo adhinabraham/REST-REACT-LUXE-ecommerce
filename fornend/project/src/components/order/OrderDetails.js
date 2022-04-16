@@ -137,7 +137,7 @@ function OrderDetails() {
                           {obj.status}
                         </button>
 
-                        {obj.status == "cancel" ? (
+                        {obj.status == "cancel" || obj.status== "Develiverd" ? (
                           <div></div>
                         ) : (
                           <button

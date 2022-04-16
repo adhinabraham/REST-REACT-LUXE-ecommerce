@@ -386,7 +386,7 @@ class pdf(PDFTemplateView):
     def get (self,request):
         assets=Order.objects.all()
         
-        print("pdfffffffffffffffffukc")
+        print("pdfffffffffffffffffuck")
         return super().get_context_data(
           pagesize='A4',
           title='Assets',
@@ -394,7 +394,36 @@ class pdf(PDFTemplateView):
           
         )
 
-   
+# class execl(APIView):
+#     def get(self,request):
+#         order_data = Order.objects.all()
+#         response = HttpResponse(content_type='application/ms-excel')
+#         response['Content-Disposition'] = 'attachment; filename=ShopifyOrder'+'.xls'
+#         wb = xlwt.Workbook(encoding='utf-8')
+#         ws = wb.add_sheet('Sales Report')
+#         row_num = 0
+#         font_style = xlwt.XFStyle()
+#         font_style.font.bold = True
+#         columns = ['Order No', 'Name', 'Number Of Products',
+#                 'Order Date', 'Amount', 'Payment Type']
+
+#         for col_num in range(len(columns)):
+#             ws.write(row_num, col_num, columns[col_num], font_style)
+
+#         font_style = xlwt.XFStyle()
+
+#         rows = order_data.values_list(
+#             'order_order_number', 'userusername', 'quantity', 'created_at', 'paymentamount_paid', 'payment_payment_method'
+#         )
+
+#         for row in rows:
+#             row_num = row_num + 1
+
+#             for col_num in range(len(columns)):
+#                 ws.write(row_num, col_num, str(row[col_num]), font_style)
+#         wb.save(response)
+
+#         return response
         
 #     def render_to_pdf(context_dict={}):
 #         reust=BytesIO()

@@ -29,7 +29,7 @@ function Siginup() {
       const data={"username":name,"password":password,"email":email,"mobile_number":phone}
     
         console.log("button clicked ")
-        axios.post('http://127.0.0.1:8000/siginup',data
+        axios.post('http://127.0.0.1:8000/siginup/',data
         ).then((Response)=>{
             console.log("this is then ")
             console.log("this is then ...")

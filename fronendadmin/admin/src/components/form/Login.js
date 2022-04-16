@@ -18,7 +18,7 @@ function Login() {
     
     useEffect(()=>{
         if (token['mytoken']){
-            navigate('/Listuser')
+            navigate('/dashboard')
             console.log("this is token")
         }
     },[token])
@@ -34,7 +34,7 @@ function Login() {
         axios.post('http://127.0.0.1:8000/user/token/',data).then((Response)=>{
             console.log(Response.data)
             setToken('mytoken',Response.data.access)
-            navigate("/dashboard");
+            navigate("/Listuser");
 
             console.log(token["mytoken"])
  

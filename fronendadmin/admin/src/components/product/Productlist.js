@@ -4,6 +4,8 @@ import axios from "axios";
 import { useState, useEffect ,useCallback} from "react";
 import swal from 'sweetalert';
 
+
+
 import Navigation from "../verticalNavigation/Navigation";
 
 
@@ -150,7 +152,7 @@ function Productlist() {
                         {obj.productname}
                       </td>
                       <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">
-                        {obj.price}$
+                        {obj.price}
                       </td>
                    
                       <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 dark:text-gray-100 tracking-normal leading-4">

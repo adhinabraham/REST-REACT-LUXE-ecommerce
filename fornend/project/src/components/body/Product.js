@@ -12,7 +12,9 @@ toast.configure();
 
 function Product() {
     const [products,setproducts]=useState([])
-    const userid = localStorage.getItem("userid");
+  const userid = localStorage.getItem("userid");
+  const [display,setdisplay]=useState()
+ 
 
     const notificationsuccess=(message)=>{
         toast.success(''+message, {
@@ -37,6 +39,24 @@ function Product() {
           progress: undefined,
           });
       }
+  
+  const categorystatus = () => {
+    axios.get("http://127.0.0.1:8000/product/categoryitem/").then((Response) => {
+      
+   
+      console.log(Response.data)
+      setdisplay( Response.data["item"])
+      
+
+    }).catch((error) => {
+      console.log("this is error")
+    })
+  }
+  useEffect(() => {
+    categorystatus()
+    
+  }, [])
+  
      
 
 
@@ -78,6 +98,11 @@ function Product() {
           <p className=" w-10/12 mx-auto md:w-full  font-semibold lg:text-4xl text-3xl lg:leading-9 md:leading-7 leading-9 text-center text-gray-800">
             Summer Collection Vol-1
           </p>
+          {display && (
+            <p className="text-xl font-bold text-red-500 animate-ping">
+              Now offer in {display} Category
+            </p>
+          )}
         </div>
         <div className=" py-6 lg:px-20 md:px-6 px-4">
           {/* <p className=" font-normal text-sm leading-3 text-gray-600 ">Home / Shop by Category / Women </p> */}

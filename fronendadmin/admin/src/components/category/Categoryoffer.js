@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navigation from "../verticalNavigation/Navigation";
 import Navbar from "../adminnavbar/Navbar";
@@ -6,31 +5,64 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import validator from "@brocode/simple-react-form-validation-helper";
 
 function Categoryoffer() {
-     const [categoryname, setcategoryname] = useState("");
-     const [price, setprice] = useState(0);
-     const [offername, setoffername] = useState("");
+  const [categoryname, setcategoryname] = useState("");
+  const [categorynameerror, setcategorynameerror] = useState("");
+  const [price, setprice] = useState(0);
+  const [priceerror, setpriceerror] = useState("");
+  const [offername, setoffername] = useState("");
+  const [offernameerror, setoffernameerror] = useState("");
+  const [error, seterror] = useState(false);
+
+  const [addcategory, setaddcategory] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/newadmin/category/").then((Response) => {
+      console.log("this is useEffect");
+      console.log(Response.data);
+      setaddcategory(Response.data);
+    });
+  }, []);
+
+  const notificationsuccess = (message) => {
+    toast.success("" + message, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  const notificationerror = (message) => {
+      toast.error("" + message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    };
    
-    const[addcategory,setaddcategory]=useState([])
-    
-     useEffect(() => {
-       axios
-         .get("http://127.0.0.1:8000/newadmin/category/")
-         .then((Response) => {
-           console.log("this is useEffect");
-           console.log(Response.data);
-           setaddcategory(Response.data);
-         });
-     }, []);
-    
+
   const form = (e) => {
+    if(categoryname === "" || offername === "") {
+      console.log("this isnull");
+      seterror(true);
+      e.preventDefault();
+      return;
+    }
     console.log("what is done here");
     console.log(categoryname, price, offername);
     const data = {
-     "categoryname": categoryname,
-      "discountpercentage": price,
-      "offername": offername,
+      categoryname: categoryname,
+      discountpercentage: price,
+      offername: offername,
     };
     console.log(data);
     axios
@@ -38,13 +70,13 @@ function Categoryoffer() {
       .then((Response) => {
         console.log(Response.data);
         console.log("offerapplied");
+        notificationsuccess("offer applied");
       })
       .catch((error) => {
         console.log("this is error");
+        notificationerror("not valid offer ")
       });
   };
-    
-  
 
   return (
     <div>
@@ -86,7 +118,9 @@ function Categoryoffer() {
                     <option>Shirts</option>
                     <option>Pants</option> */}
                         {addcategory.map((obj) => {
-                          return <option value={obj.id}>{obj.category_name}</option>;
+                          return (
+                            <option value={obj.id}>{obj.category_name}</option>
+                          );
                         })}
                       </select>
                       <label
@@ -95,14 +129,21 @@ function Categoryoffer() {
                       >
                         offerpercentage
                       </label>
-                      <input
-                        id="name"
-                        type="number"
-                        className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
-                        onChange={(e) => {
-                          setprice(e.target.value);
-                        }}
-                      ></input>
+                      <div>
+                        <input
+                          id="name"
+                          type="number"
+                          className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+                          onChange={(e) => {
+                            setprice(e.target.value);
+                            validator.priceInputBlurHandler(
+                              e.target.value,
+                              setpriceerror
+                            );
+                          }}
+                        ></input>
+                        <span className="text-red-500 fs-6">{priceerror}</span>
+                      </div>
 
                       <label
                         htmlFor="cvc"
@@ -130,20 +171,29 @@ function Categoryoffer() {
                             <polyline points="11 12 12 12 12 16 13 16" />
                           </svg>
                         </div>
-                        <input
-                          id="cvc"
-                          type="text"
-                          className="mb-8 h-28 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full  flex items-center pl-3 text-sm border-gray-300 rounded border"
-                          placeholder=""
-                          onChange={(e) => {
-                            setoffername(e.target.value);
-                          }}
-                        />
+                        <div>
+                          <input
+                            id="cvc"
+                            type="text"
+                            className="mb-8 h-28 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full  flex items-center pl-3 text-sm border-gray-300 rounded border"
+                            placeholder=""
+                            onChange={(e) => {
+                              setoffername(e.target.value);
+                              validator.addressInputBlurHandler(
+                                e.target.value,
+                                setoffernameerror
+                              ); seterror(false)
+                            }}
+                          />
+                          <span className="text-red-500 fs-6">
+                            {offernameerror}
+                          </span>
+                        </div>
                       </div>
                       <div className="flex items-center justify-start w-full">
                         <button
-                          className="focus:outline-none transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm" onClick={form}
-                         
+                          className="focus:outline-none transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm"
+                          onClick={form}
                         >
                           Submit
                         </button>
@@ -151,6 +201,11 @@ function Categoryoffer() {
                           Cancel
                         </button>
                       </div>
+                      {error ? (
+                        <p className="text-red-500">please fill the field</p>
+                      ) : (
+                        <p></p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -163,4 +218,4 @@ function Categoryoffer() {
   );
 }
 
-export default Categoryoffer
+export default Categoryoffer;

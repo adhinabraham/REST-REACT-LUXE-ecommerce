@@ -43,12 +43,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'users',
     'rest_framework.authtoken',
-    'corsheaders',
+    "corsheaders",
     'newadmin',
     'products',
     'order',
     'cart.apps.CartConfig'
-    
+
 
 ]
 AUTH_USER_MODEL = 'users.MyUser'
@@ -85,12 +85,11 @@ SIMPLE_JWT = {
 }
 
 
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    
+    # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -100,14 +99,22 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
+ALLOWED_HOSTS = ['*']
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    
-    
+
     "http://localhost:3000",
     "http://localhost:3001",
-   
+
 ]
+
+# If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+
 
 
 TEMPLATES = [
@@ -129,12 +136,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 REST_FRAMEWORK = {
-    
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        
+
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
-    
+
 }
 
 
@@ -144,10 +151,10 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'ecom' ,
-        'USER':'postgres',
-        'PASSWORD':'1414',
-        'HOST':'localhost',
+        'NAME': 'ecom',
+        'USER': 'postgres',
+        'PASSWORD': '1414',
+        'HOST': 'localhost',
     }
 }
 
@@ -193,7 +200,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL='/as/'
+MEDIA_URL = '/as/'
 # STATICFILES_DIRS=[
 #     BASE_DIR/'pics'
 
@@ -201,7 +208,7 @@ MEDIA_URL='/as/'
 # ]
 
 
-MEIDA_ROOT ='/pics/'
+MEIDA_ROOT = '/pics/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

@@ -1,14 +1,20 @@
 import React from 'react'
 import { useState,useEffect } from "react";
 import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import validator from "@brocode/simple-react-form-validation-helper";
 
 function Userform() {
   const [user, setuser] = useState([])
   const [value, setvalue] = useState([])
   const [name, setname] = useState("")
+  const[nameerror,setnameerror]=useState("")
   const [email, setemail] = useState("");
+  const [emailerror, setemailerror] = useState("");
   const [phone, setphone] = useState("");
-  const [profile,useprofile]=useState(false)
+  const [phoneerror, setphoneerror] = useState("");
+  const [profile, useprofile] = useState(false)
+  const [error,seterror]=useState(false)
   const userid = localStorage.getItem("userid");
   console.log(name)
 
@@ -38,7 +44,13 @@ function Userform() {
   };
 
 
-  const edituserdetails = () => {
+  const edituserdetails = (e) => {
+      if ( name == "" || phone == "" || email=="") {
+        console.log("this isnull");
+        seterror(true);
+        e.preventDefault();
+        return;
+      }
     console.log(name, phone, email)
     const data = { "id": userid, "username": name, "phone": phone, "email": email }
     console.log(data)
@@ -107,7 +119,6 @@ function Userform() {
                         <h2 className="text-gray-800 text-base md:text-lg leading-8 tracking-wider mt-2">
                           +{user.mobile_number} (Phone)
                         </h2>
-                      
                       </div>
                     )}
                     {user && (
@@ -136,21 +147,29 @@ function Userform() {
                   Edit profile
                 </h1>
                 <div className="w-full 2xl:w-8/12 mt-3">
-                  <h2 className="text-gray-800 text-base md:text-lg leading-8 tracking-wider">
-                    plse edit profile
-                  </h2>
-                  <div className="mt-4 md:mt-8">
-                    <p className="text-gray-800 text-base font-medium">Name</p>
-                    <input
-                      className="mt-3 text-base border-2 w-11/12 lg:w-full xl:w-10/12 hover:border-indigo-600 focus:border-indigo-600 focus:outline-none border-black py-5 pl-4 text-gray-800"
-                      type="text"
-                      value={name}
-                     
-                      onChange={(e) => {
-                        setname(e.target.value);
-                      }}
-                    />
+                  <div>
+                    <div className="mt-4 md:mt-8">
+                      <p className="text-gray-800 text-base font-medium">
+                        Name
+                      </p>
+                      <input
+                        className="mt-3 text-base border-2 w-11/12 lg:w-full xl:w-10/12 hover:border-indigo-600 focus:border-indigo-600 focus:outline-none border-black py-5 pl-4 text-gray-800"
+                        type="text"
+                        value={name}
+                        onChange={(e) => {
+                          setname(e.target.value);
+
+                          validator.nameInputBlurHandler(
+                            e.target.value,
+                            setnameerror
+                          );
+                          seterror(false);
+                        }}
+                      />
+                    </div>
+                    <span className="text-red-500 fs-6">{nameerror}</span>
                   </div>
+
                   <div className="mt-4 md:mt-8">
                     <p className="text-gray-800 text-base font-medium">
                       Email Address
@@ -159,12 +178,17 @@ function Userform() {
                       className="mt-3 text-base border-2 w-11/12 lg:w-full xl:w-10/12 hover:border-indigo-600 focus:border-indigo-600 focus:outline-none border-black py-5 pl-4 text-gray-800"
                       type="email"
                       value={email}
-                     
                       onChange={(e) => {
                         setemail(e.target.value);
+                        validator.emailInputBlurHandler(
+                          e.target.value,
+                          setemailerror
+                        );
+                        seterror(false);
                       }}
                     />
                   </div>
+                  <span className="text-red-500 fs-6">{emailerror}</span>
                   <div className="mt-4 md:mt-8">
                     <p className="text-gray-800 text-base font-medium">
                       Phonenumber
@@ -173,9 +197,9 @@ function Userform() {
                       className="mt-3 text-base border-2 w-11/12 lg:w-full xl:w-10/12 hover:border-indigo-600 focus:border-indigo-600 focus:outline-none border-black py-5 pl-4 text-gray-800"
                       type="number"
                       value={phone}
-                      
                       onChange={(e) => {
                         setphone(e.target.value);
+                        seterror(false);
                       }}
                     />
                   </div>
@@ -193,10 +217,19 @@ function Userform() {
                   <div className="py-5">
                     <button
                       className="py-3 md:py-5 px-5 md:px-10 bg-gray-900 text-white hover:opacity-90 ease-in duration-150 text-sm md:text-lg tracking-wider font-semibold"
-                      onClick={() => { edituserdetails() }}
+                      onClick={() => {
+                        edituserdetails();
+                      }}
                     >
                       edit
                     </button>
+                    {error ? (
+                      <p className="text-red-500">
+                        plse fill the form properly
+                      </p>
+                    ) : (
+                      <p></p>
+                    )}
                   </div>
                 </div>
               </div>

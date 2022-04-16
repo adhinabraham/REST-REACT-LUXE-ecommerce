@@ -151,7 +151,7 @@ function Salesreport() {
       <Navbar></Navbar>
       <div>
         <Navigation className="w-1/5"></Navigation>
-        <div className=" mt-[-500px] ml-96 w-4/5  ">
+        <div className=" mt-[-700px] ml-96 w-4/5  ">
           {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Basic example"
