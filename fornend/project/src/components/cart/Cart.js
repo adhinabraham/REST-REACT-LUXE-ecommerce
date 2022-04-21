@@ -232,7 +232,7 @@ function Cart() {
         <div>
           <div>
             <div
-              className="w-full h-full bg-white  top-0 overflow-y-auto overflow-x-hidden fixed sticky-0"
+              className="w-screen h-full bg-white top-0 overflow-y-auto overflow-x-hidden fixed sticky-0"
               id="chec-div"
             >
               <div

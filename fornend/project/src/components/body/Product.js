@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect,useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Carosal from "./Carosal";
@@ -13,7 +13,8 @@ toast.configure();
 function Product() {
     const [products,setproducts]=useState([])
   const userid = localStorage.getItem("userid");
-  const [display,setdisplay]=useState()
+  const [display, setdisplay] = useState()
+  const navigate=useNavigate()
  
 
     const notificationsuccess=(message)=>{
@@ -85,6 +86,15 @@ function Product() {
         notificationerror("something went wrong ..")
     })
     }
+  
+  
+  const buynow = (productprice) => {
+     console.log("shit happens")
+    localStorage.setItem("carttotal", productprice);
+    navigate("/shipping");
+
+    
+  }
    
 
 
@@ -166,6 +176,16 @@ function Product() {
                         }}
                       >
                         Add to Cart
+                      </button>
+                      
+                      <button
+                        className=" bg-transparent font-medium text-base leading-4 border-2 border-white py-3 w-full mt-2 text-white"
+                        onClick={() => {
+                          buynow(obj.price);
+                        
+                        }}
+                      >
+                        buy now
                       </button>
                     </div>
                   </div>
